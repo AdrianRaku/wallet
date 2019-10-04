@@ -21,7 +21,7 @@ class ReceiptItemType extends AbstractType
             ->add('Name', TextType::class)
             ->add('Price',TextType::class)
             ->add('Quantity',TextType::class)
-            ->add('Duty',TextType::class)
+//            ->add('Duty',TextType::class)
             ->add('Save', SubmitType::class, ['label' => 'Save'])
             ->add('Add', SubmitType::class, ['label' => 'Add'])
         ;

@@ -26,25 +26,38 @@ class ReceiptController extends Controller
      * @return Response
      */
     public function addItem(Request $request)
-   {
+    {
         $session = new Session();
-        $receipt=$session->get('receipt');
-        if(!$itemArray = $session->get('itemArray'))
+        $receipt = $session->get('receipt');
+        if (!$itemArray = $session->get('itemArray'))
             $itemArray = new ArrayCollection();
 
-        $receiptItem =  new ReceiptItem();
+        $receiptItem = new ReceiptItem();
         $receiptItem->setReceiptId(0);
-        $form=$this->createForm(ReceiptItemType::class, $receiptItem);
-        $form->get('Quantity')->setData(3);
+        $form = $this->createForm(ReceiptItemType::class, $receiptItem);
         $form->handleRequest($request);
 
-       if($form->isValid())
-           if($form->get('Add')->isClicked()){
-               $receiptItem =$form->getData();
-               $receiptItem->nr=sizeof($itemArray);
-               $itemArray->add($receiptItem);
-               $session->set('itemArray',$itemArray);
-       }
+        if ($form->isValid()) {
+            if ($form->get('Add')->isClicked()) {
+                $receiptItem = $form->getData();
+                $receiptItem->nr = sizeof($itemArray);
+                $itemArray->add($receiptItem);
+                $session->set('itemArray', $itemArray);
+            }
+            if($form->get('Save')->isClicked()){
+                $entityManager = $this->getDoctrine()->getManager();
+                foreach($itemArray as $item){
+                    $entityManager->persist($item);
+                $entityManager->flush();
+                }
+                $entityManager->merge($receipt);
+                $entityManager->flush();
+                $session->remove('receipt');
+                $session->remove('itemArray');
+                return $this->redirectToRoute("newReceipt");
+
+            }
+        }
         return $this->render('receipt/newReceipt.html.twig',[
             'form' => $form->createView(),
             'items' => $itemArray
@@ -92,4 +105,5 @@ class ReceiptController extends Controller
         $session->set('itemArray', $itemArray);
         return $this->redirectToRoute("addItem");
    }
+
 }

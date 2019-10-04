@@ -45,9 +45,55 @@ class ReceiptItem
      *
      * @Assert\NotBlank
      *
-     * @ORM\Column(name="quantity", type="float")
+     * @ORM\Column(name="price", type="float")
      */
     private $price;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createdAt", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updatedAt", type="datetime", nullable=true)
+     */
+    private $updatedAt;
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
 
     /**
      * @return float
@@ -72,12 +118,12 @@ class ReceiptItem
      */
     private $receiptId;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="duty", type="float")
-     */
-    private $duty;
+//    /**
+//     * @var float
+//     *
+//     * @ORM\Column(name="duty", type="float")
+//     */
+//    private $duty;
 
 
     /**
@@ -185,6 +231,7 @@ class ReceiptItem
     {
         return $this->duty;
     }
+
 
 }
 
